@@ -1,0 +1,16 @@
+{
+  "name": "Training plan",
+  "short_name": "Training",
+  "description": "Four-day strength, endurance and abs/core plan with animated demos, set tracking and a rest timer.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDF1EC",
+  "theme_color": "#15261F",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
