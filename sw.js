@@ -1,6 +1,6 @@
 /* Offline support: the page is fetched fresh when online (so updates arrive),
    and served from cache when the network is slow or missing. */
-const CACHE = 'training-plan-v1';
+const CACHE = 'training-plan-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/favicon-64.png'];
 
 self.addEventListener('install', e => {

@@ -165,10 +165,45 @@ h1,h2,h3{font-family:var(--font-d);font-weight:700;letter-spacing:.01em;margin:0
 .guide .wk .on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .guide .wk .cardio{border-style:dashed}
 
+/* calendar */
+.nextcard{background:var(--ink);color:var(--bg);border-radius:16px;padding:16px;margin:14px 0 18px}
+.nextcard .nc-k{font-size:14px;opacity:.75;margin:0}
+.nextcard .nc-when{font:700 30px/1.05 var(--font-d);margin:2px 0 8px}
+.nextcard .nc-day{font:600 20px/1.15 var(--font-d);margin:0}
+.nextcard .nc-ex{margin:6px 0 14px;font-size:15px;opacity:.85}
+.nextcard button{width:100%;border:0;border-radius:12px;background:var(--bg);color:var(--ink);padding:12px;font:700 19px/1 var(--font-d)}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 10px 10px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
+.cal-head h2{font-size:24px}
+.calnav{width:40px;height:40px;border:1.5px solid var(--line);background:transparent;border-radius:10px;display:grid;place-items:center}
+.calnav svg{width:18px;height:18px}
+.cal-dow,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.cal-dow span{text-align:center;font-size:12px;color:var(--muted);padding:2px 0 4px}
+.cal-grid button,.cal-grid span{aspect-ratio:1/1.08;border:0;background:none;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:5px 0 0;gap:3px;font-size:14px;min-width:0}
+.cal-grid button[aria-pressed="true"]{background:var(--panel)}
+.cal-grid .dn{line-height:1;color:var(--muted)}
+.cal-grid .today .dn{color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.mk{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font:700 14px/1 var(--font-d);font-style:normal}
+.mk.done{background:var(--ink);color:var(--bg)}
+.mk.plan{border:1.5px dashed var(--muted);color:var(--muted)}
+.mk.next{border:2px solid var(--ink);color:var(--ink);border-style:solid}
+.cal-legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:10px 0 0;font-size:13px;color:var(--muted)}
+.cal-legend span{display:inline-flex;align-items:center;gap:6px}
+.cal-legend .mk{width:18px;height:18px;font-size:11px}
+.todaydot{width:14px;height:2px;background:var(--ink);display:inline-block}
+.cal-stat{text-align:center;margin:8px 0 2px;font-size:14px}
+#caldetail{margin:14px 0 0}
+#caldetail .sess h2{font-size:22px}
+.plancard{background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;padding:12px 14px}
+.plancard h2{font-size:22px}
+.plancard p{margin:4px 0 0;color:var(--muted);font-size:15px}
+.plancard ol{margin:8px 0 12px;padding-left:22px;font-size:15px}
+.plancard .ghost{width:100%}
+
 /* timer + nav */
 .timer{position:fixed;left:0;right:0;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));z-index:20;
-  background:var(--surface);border-top:1px solid var(--line);transform:translateY(130%);transition:transform .25s ease}
-.timer.on{transform:none}
+  background:var(--surface);border-top:1px solid var(--line);transform:translateY(130%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s}
+.timer.on{transform:none;visibility:visible;transition:transform .25s ease}
 .timer .tbar{height:5px;background:var(--line)}
 .timer .tbar i{display:block;height:100%;background:var(--tc,var(--ink));width:100%}
 .timer .trow{max-width:560px;margin:0 auto;padding:10px 16px 12px;display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center}
@@ -180,7 +215,7 @@ h1,h2,h3{font-family:var(--font-d);font-weight:700;letter-spacing:.01em;margin:0
 .timer button{border:1.5px solid var(--line);background:transparent;border-radius:10px;padding:9px 10px;font-weight:600;font-size:14px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom,0px)}
-nav.tabs div{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);height:var(--nav-h)}
+nav.tabs div{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav-h)}
 nav.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:13px;color:var(--muted)}
 nav.tabs svg{width:22px;height:22px}
 nav.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
@@ -229,6 +264,23 @@ nav.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
     <div id="list"></div>
     <button class="finish" id="finish"></button>
     <button class="linkbtn" id="reset">Clear today’s ticks</button>
+  </section>
+
+  <section id="v-calendar" class="wrap page" hidden>
+    <h1>Calendar</h1>
+    <div class="nextcard" id="nextcard"></div>
+    <div class="cal">
+      <div class="cal-head">
+        <button class="calnav" id="calprev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <h2 id="calmonth"></h2>
+        <button class="calnav" id="calnext" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <div class="cal-dow" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="cal-grid" id="calgrid"></div>
+      <div class="cal-legend"><span><i class="mk done">1</i>Done</span><span><i class="mk plan">2</i>Planned</span><span><i class="todaydot"></i>Today</span></div>
+      <p class="cal-stat" id="calstat"></p>
+    </div>
+    <div id="caldetail"></div>
   </section>
 
   <section id="v-history" class="wrap page" hidden>
@@ -295,6 +347,7 @@ nav.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
         <li>Your weights and history are saved on this phone only.</li>
         <li>Tap <b>Back up</b> on the History tab every couple of weeks. Use <b>Restore</b> to bring everything back on a new phone.</li>
         <li>Use <b>Copy log to share</b> on the History tab to send your numbers to your coach.</li>
+        <li>The <b>Calendar</b> tab shows the days you trained, what’s planned next, and which day is due on your next gym visit.</li>
         <li>Tap the plan name at the top of the Workout tab to rename it.</li>
       </ul>
     </section>
@@ -313,6 +366,7 @@ nav.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
 
 <nav class="tabs" aria-label="Sections"><div>
   <button data-v="workout" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/></svg>Workout</button>
+  <button data-v="calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendar</button>
   <button data-v="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg>History</button>
   <button data-v="guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Guide</button>
 </div></nav>
@@ -1071,6 +1125,7 @@ const DAYS = [
     if (!Object.keys(entry.ex).length) { toast('Tick off at least one set first.'); return; }
     store.hist.push(entry); store.cur[d.n] = {}; store.day = null; save();
     stopTimer(); renderDay(); renderHistory(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!$('#v-calendar').hidden) renderCal();
     toast(`Day ${d.n} saved to history.`);
   });
   $('#reset').addEventListener('click', () => {
@@ -1172,13 +1227,105 @@ const DAYS = [
   });
 
   /* ---------- views & misc ---------- */
-  document.querySelector('nav.tabs').addEventListener('click', e => {
-    const b = e.target.closest('button[data-v]'); if (!b) return;
-    document.querySelectorAll('nav.tabs button').forEach(x => x.toggleAttribute('aria-current', x === b));
-    b.setAttribute('aria-current', 'page');
-    ['workout', 'history', 'guide'].forEach(v => $('#v-' + v).hidden = v !== b.dataset.v);
-    if (b.dataset.v === 'history') renderHistory();
+  function showView(v) {
+    document.querySelectorAll('nav.tabs button').forEach(x => { if (x.dataset.v === v) x.setAttribute('aria-current', 'page'); else x.removeAttribute('aria-current'); });
+    ['workout', 'calendar', 'history', 'guide'].forEach(k => $('#v-' + k).hidden = k !== v);
+    if (v === 'history') renderHistory();
+    if (v === 'calendar') renderCal();
     window.scrollTo({ top: 0 });
+  }
+  document.querySelector('nav.tabs').addEventListener('click', e => {
+    const b = e.target.closest('button[data-v]'); if (b) showView(b.dataset.v);
+  });
+
+  /* ---------- calendar ---------- */
+  const SCHED = [1, 2, 4, 5]; // Mon, Tue, Thu, Fri
+  const dkey = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const midnight = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  let calMonth = midnight(new Date()); calMonth.setDate(1);
+  let calSel = null;
+  function doneByDate() {
+    const m = {};
+    store.hist.forEach((s, i) => { const k = dkey(new Date(s.date)); (m[k] = m[k] || []).push({ ...s, i }); });
+    return m;
+  }
+  function nextVisit() {
+    const today = midnight(new Date());
+    if (store.day && hasTicks(store.day)) return { date: today, n: store.day, inProg: true };
+    const last = store.hist[store.hist.length - 1];
+    const n = last ? (last.day % 4) + 1 : 1;
+    let d = doneByDate()[dkey(today)] ? addDays(today, 1) : today;
+    while (!SCHED.includes(d.getDay())) d = addDays(d, 1);
+    return { date: d, n };
+  }
+  function plannedUntil(limit) {
+    const nv = nextVisit(), m = {};
+    m[dkey(nv.date)] = nv.n;
+    let n = (nv.n % 4) + 1, d = addDays(nv.date, 1);
+    while (d <= limit) { if (SCHED.includes(d.getDay())) { m[dkey(d)] = n; n = (n % 4) + 1; } d = addDays(d, 1); }
+    return m;
+  }
+  function whenLabel(d) {
+    const t = midnight(new Date()), diff = Math.round((midnight(d) - t) / 86400000);
+    const full = d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short' });
+    return diff === 0 ? `Today, ${full}` : diff === 1 ? `Tomorrow, ${full}` : full;
+  }
+  function renderNext() {
+    const nv = nextVisit(), d = DAYS[nv.n - 1];
+    $('#nextcard').innerHTML = `<p class="nc-k">${nv.inProg ? 'In progress' : 'Next gym visit'}</p>
+      <p class="nc-when">${esc(whenLabel(nv.date))}</p>
+      <p class="nc-day">Day ${d.n}: ${esc(d.title)}</p>
+      <p class="nc-ex">${esc(d.ex.map(e => e.name).join(', '))}</p>
+      <button data-open="${d.n}">${nv.inProg ? 'Continue' : 'Open'} day ${d.n}</button>`;
+  }
+  function renderCal() {
+    renderNext();
+    const y = calMonth.getFullYear(), mo = calMonth.getMonth();
+    const lastDate = new Date(y, mo + 1, 0), offset = (new Date(y, mo, 1).getDay() + 6) % 7;
+    const done = doneByDate(), plan = plannedUntil(lastDate), tk = dkey(new Date()), nk = dkey(nextVisit().date);
+    $('#calmonth').textContent = calMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    let html = '<span></span>'.repeat(offset), count = 0;
+    for (let i = 1; i <= lastDate.getDate(); i++) {
+      const dt = new Date(y, mo, i), k = dkey(dt), dn = done[k], pl = !dn && plan[k];
+      if (dn) count += dn.length;
+      const mark = dn ? `<i class="mk done">${dn[dn.length - 1].day}</i>` : pl ? `<i class="mk plan${k === nk ? ' next' : ''}">${pl}</i>` : '';
+      const lab = dt.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' }) + (dn ? `: day ${dn.map(x => x.day).join(' and ')} done` : pl ? `: day ${pl} planned` : '');
+      html += `<button class="${k === tk ? 'today' : ''}" data-k="${k}" aria-pressed="${calSel === k}" aria-label="${esc(lab)}"><span class="dn">${i}</span>${mark}</button>`;
+    }
+    $('#calgrid').innerHTML = html;
+    $('#calstat').textContent = count ? `${count} workout${count === 1 ? '' : 's'} this month` : 'No workouts logged this month yet';
+    renderCalDetail(done, plan);
+  }
+  function renderCalDetail(done, plan) {
+    const box = $('#caldetail');
+    if (!calSel) { box.innerHTML = ''; return; }
+    const dt = new Date(calSel + 'T12:00:00'), label = dt.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+    const dn = done[calSel], pl = plan[calSel];
+    if (dn) {
+      box.innerHTML = dn.map(s => {
+        const d = DAYS[s.day - 1];
+        return `<article class="sess"><header><h2>Day ${s.day}: ${esc(d.title)}</h2><time>${esc(label)}</time></header>
+          <dl>${Object.entries(s.ex).map(([id, vals]) => { const ex = exName(id); return `<dt>${esc(ex.name)}</dt><dd>${esc(valText(ex, vals))}</dd>`; }).join('')}</dl></article>`;
+      }).join('');
+    } else if (pl) {
+      const d = DAYS[pl - 1];
+      box.innerHTML = `<div class="plancard"><h2>Planned: day ${d.n}, ${esc(d.title.toLowerCase())}</h2><p>${esc(label)}</p>
+        <ol>${d.ex.map(e => `<li>${esc(e.name)}, ${esc(e.rx)}</li>`).join('')}</ol>
+        <button class="ghost" data-open="${d.n}">Open day ${d.n}</button></div>`;
+    } else {
+      box.innerHTML = `<div class="empty">${esc(label)}: nothing logged or planned. ${dt < midnight(new Date()) ? 'Rest day.' : 'Off day, or an easy cardio day.'}</div>`;
+    }
+  }
+  $('#calgrid').addEventListener('click', e => {
+    const b = e.target.closest('button[data-k]'); if (!b) return;
+    calSel = calSel === b.dataset.k ? null : b.dataset.k; renderCal();
+  });
+  $('#calprev').addEventListener('click', () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1); calSel = null; renderCal(); });
+  $('#calnext').addEventListener('click', () => { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1); calSel = null; renderCal(); });
+  $('#v-calendar').addEventListener('click', e => {
+    const b = e.target.closest('[data-open]'); if (!b) return;
+    day = +b.dataset.open; renderDay(); showView('workout');
   });
   let tt;
   function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
